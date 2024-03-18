@@ -13,7 +13,7 @@ export class Nest {
             {
                 fontFamily: 'Arial',
                 fontSize: 24,
-                fill: 0xff0000,
+                fill: 0xffffff,
                 align: 'center'
             });
     }

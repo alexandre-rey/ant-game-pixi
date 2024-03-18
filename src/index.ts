@@ -90,9 +90,6 @@ import { Pheromon } from './entities/pheromon';
 			counter = 0;
 		}
 
-		
-		
-
 		ants.forEach(ant => {
 			ant.updateDirection(foods);
 			let newPheromon = ant.move(app, pheromons);
