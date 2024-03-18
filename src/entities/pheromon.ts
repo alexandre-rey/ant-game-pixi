@@ -3,9 +3,9 @@ import { Application, Graphics } from "pixi.js";
 
 export class Pheromon {
 
-    private graphics: Graphics;
+    public graphics: Graphics;
     private lifespan: number;
-    private type: string;
+    public type: string;
 
     constructor(public x: number, public y: number, type: string = 'toFood', app: Application) {
 
@@ -13,10 +13,12 @@ export class Pheromon {
         this.type = type;
 
         this.graphics = new Graphics();
-        this.graphics.circle(x, y, 2);
+        this.graphics.position.x = x;
+        this.graphics.position.y = y;
+        this.graphics.circle(0, 0, 2);
         this.graphics.fill(this.type === 'toFood' ? 0x00FF00 : 0xFF0000);
-        app.stage.addChild(this.graphics);
 
+        app.stage.addChild(this.graphics);
     }
 
     public update(app: Application): boolean {

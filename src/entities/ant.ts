@@ -16,9 +16,10 @@ export class Ant {
     private boundY: number = 0;
     private hasFood: boolean = false;
     private pheromonTimer: number;
+    private perceptionRadius = 500;
 
-    constructor(private nest: Nest) { 
-        this.pheromonTimer = 100;
+    constructor(private nest: Nest) {
+        this.pheromonTimer = 200;
     }
 
     public async setup(startX: number, startY: number, app: Application) {
@@ -57,7 +58,7 @@ export class Ant {
 
                 const distToNest = Math.sqrt(dx * dx + dy * dy);
 
-                if(distToNest < 20) {
+                if (distToNest < 20) {
                     this.hasFood = false;
                     this.nest.addFood();
                 } else {
@@ -117,8 +118,8 @@ export class Ant {
     }
 
     public eatFood(foods: Food[], app: Application) {
-        
-        if(this.hasFood) return;
+
+        if (this.hasFood) return;
 
         foods.forEach((food, index) => {
 
@@ -136,9 +137,11 @@ export class Ant {
         });
     }
 
-    public move(app:Application):Pheromon|null{
+    public move(app: Application, pheromons: Pheromon[]): Pheromon | null {
 
         if (this.sprite) {
+
+            this.followPheromons(pheromons);
 
             this.sprite.x += this.direction.x * this.speed;
             this.sprite.y += this.direction.y * this.speed;
@@ -152,7 +155,7 @@ export class Ant {
                 this.direction.y = -this.direction.y;
             }
 
-            if(this.pheromonTimer++ % 5 === 0){
+            if (this.pheromonTimer++ % 5 === 0) {
 
                 let type = this.hasFood ? 'toNest' : 'toFood';
 
@@ -167,5 +170,63 @@ export class Ant {
 
         return null;
     }
+
+    private followPheromons(pheromones: Pheromon[]) {
+
+        if (this.hasFood) return;
+
+        let reachablePheromenons = pheromones.filter(pheromone => {
+
+            if (pheromone.type === 'toNest') return true;
+            else return false;
+
+            /*if (this.sprite) {
+                const dx = pheromone.graphics.x - this.sprite.x ;
+                const dy =  pheromone.graphics.y - this.sprite.y;
+
+                const dist = Math.sqrt(dx * dx + dy * dy);
+
+                if (dist < this.perceptionRadius) return true;
+            }
+
+            return false;*/
+        });
+
+        if (reachablePheromenons.length > 0) {
+
+            reachablePheromenons = reachablePheromenons.filter(pheromone => {
+
+                if (this.sprite) {
+                    const dx = pheromone.graphics.getGlobalPosition().x - this.sprite.x;
+                    const dy = pheromone.graphics.getGlobalPosition().y - this.sprite.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+
+                    if (dist < this.perceptionRadius) return true;
+                }
+
+                return false;
+            });
+        }
+        
+
+
+    }
+
+    /*
+
+    private updateDirectionTowards(x: number, y: number) {
+
+        if (this.sprite) {
+            const dx = x - this.sprite.x;
+            const dy = y - this.sprite.y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+
+            if (dist > 0) {
+                this.direction.x = dx / dist;
+                this.direction.y = dy / dist;
+            }
+        }
+
+    }*/
 
 }

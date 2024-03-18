@@ -46,7 +46,7 @@ import { Pheromon } from './entities/pheromon';
 	FPSDisplay.y = 10;
 	app.stage.addChild(FPSDisplay);
 
-	for (let i = 0; i < 100; i++) {
+	for (let i = 0; i < 50; i++) {
 
 		let ant = new Ant(nest);
 
@@ -89,11 +89,13 @@ import { Pheromon } from './entities/pheromon';
 			FPSDisplay.text = Math.round(timer.FPS);
 			counter = 0;
 		}
+
+		
 		
 
 		ants.forEach(ant => {
 			ant.updateDirection(foods);
-			let newPheromon = ant.move(app);
+			let newPheromon = ant.move(app, pheromons);
 
 			if (newPheromon) {
 				pheromons.push(newPheromon);
