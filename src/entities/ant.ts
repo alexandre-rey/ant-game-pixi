@@ -153,9 +153,13 @@ export class Ant {
             }
 
             if(this.pheromonTimer++ % 5 === 0){
+
+                let type = this.hasFood ? 'toNest' : 'toFood';
+
                 return new Pheromon(
                     this.sprite.x,
                     this.sprite.y,
+                    type,
                     app
                 );
             }
