@@ -30,7 +30,6 @@ export class Ant {
 
         const texture = await Assets.load('/ant.png');
         this.sprite = new Sprite(texture);
-        this.sprite = new Sprite(texture);
         this.sprite.anchor.set(0.5);
         this.sprite.x = startX;
         this.sprite.y = startY;
